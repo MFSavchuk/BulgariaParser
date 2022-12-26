@@ -7,7 +7,7 @@ def create_lists_and_new_file_for_parser(multiproc):
     current_date = date.today()
     new_file = f'01_data/{current_date}.txt'
     list_statements = []
-    filepaths = [os.path.join(dirpath, file) for dirpath, dirnames, filenames in os.walk('../01_data') for file in
+    filepaths = [os.path.join(dirpath, file) for dirpath, dirnames, filenames in os.walk('01_data') for file in
                  filenames]
     previous_file = filepaths[-1]
     if not os.path.exists(new_file):
