@@ -38,5 +38,6 @@ class Parser(multiprocessing.Process):
                     self.collector.put(f'{statement} Указ. Отправлено в {embassy}\n')
                 else:
                     self.collector.put(f'{statement} {result}\n')
+                print(f'Обработан номер - {statement}')
 
         browser.quit()

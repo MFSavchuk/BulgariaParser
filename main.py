@@ -45,4 +45,4 @@ def run_parser(multiproc):
 
 
 if __name__ == '__main__':
-    run_parser(multiproc=8)
+    run_parser(multiproc=4)
