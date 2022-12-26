@@ -123,22 +123,22 @@ def compare(file_result):
         print('---------------------------------------------------------------------------------------------------------------------------------------')
 
         ff.write(
-            f'"Положительно": до меня - {my_count_positive}, после меня - {after_my_count_positive}, всего - {all_count_positive}\n')
+            f'"Положительно": до - {my_count_positive}, после - {after_my_count_positive}, всего - {all_count_positive}\n')
         print(
-            f'"Положительно": до меня - {my_count_positive}, после меня - {after_my_count_positive}, всего - {all_count_positive}')
+            f'"Положительно": до - {my_count_positive}, после - {after_my_count_positive}, всего - {all_count_positive}')
 
         ff.write(
-            f'"Финальная проверка": до меня -  {my_count_final}, после меня - {after_my_count_final}, всего - {all_count_final}\n')
+            f'"Финальная проверка": до -  {my_count_final}, после - {after_my_count_final}, всего - {all_count_final}\n')
         print(
-            f'"Финальная проверка": до меня - {my_count_final}, после меня - {after_my_count_final}, всего - {all_count_final}')
+            f'"Финальная проверка": до - {my_count_final}, после - {after_my_count_final}, всего - {all_count_final}')
 
         ff.write(
-            f'"Переписка нерегулярная. Необходимо представить дополнительные документы" - до меня: {my_count_additional_documents}, после меня - {after_my__count_additional_documents}, всего - {all_count_additional_documents}\n')
+            f'"Переписка нерегулярная. Необходимо представить дополнительные документы": до - {my_count_additional_documents}, после - {after_my__count_additional_documents}, всего - {all_count_additional_documents}\n')
         print(
-            f'"Переписка нерегулярная. Необходимо представить дополнительные документы" - до меня: {my_count_additional_documents}, после меня - {after_my__count_additional_documents}, всего - {all_count_additional_documents}')
+            f'"Переписка нерегулярная. Необходимо представить дополнительные документы": до - {my_count_additional_documents}, после - {after_my__count_additional_documents}, всего - {all_count_additional_documents}')
 
         print('---------------------------------------------------------------------------------------------------------------------------------------')
 
 
-compare(file_result='compare_result.txt')
-compare(file_result='compare_result_test.txt')
+# compare(file_result='compare_result.txt')
+# compare(file_result='compare_result_test.txt')
