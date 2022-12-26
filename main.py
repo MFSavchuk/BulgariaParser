@@ -48,7 +48,7 @@ def run_parser(multiproc):
     print('Этап 3 пройден')
 
     sort_file(new_file)
-    compare(file_result='compare_result.txt')
+    compare(file_result='02_result/compare_result.txt')
 
 
 if __name__ == '__main__':
