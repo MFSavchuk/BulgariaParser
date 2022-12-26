@@ -33,7 +33,7 @@ def compare(file_result):
         'Образувана преписка': 0,
     }
 
-    filepaths = [os.path.join(dirpath, file) for dirpath, dirnames, filenames in os.walk('../01_data') for file in
+    filepaths = [os.path.join(dirpath, file) for dirpath, dirnames, filenames in os.walk('01_data') for file in
                  filenames]
     statements = defaultdict(lambda: [])
 
