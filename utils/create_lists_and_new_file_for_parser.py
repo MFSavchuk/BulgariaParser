@@ -44,7 +44,7 @@ def _check_line(line_for_check, file_name):
     for final_status in final_statuses:
         if final_status in line_for_check:
             file_name.write(line_for_check)
-            print(f'Не проверяется. Добавлена строка - {line_for_check.strip()}', flush=True)
+            # print(f'Не проверяется. Добавлена строка - {line_for_check.strip()}', flush=True)
             return False
     else:
         return True
