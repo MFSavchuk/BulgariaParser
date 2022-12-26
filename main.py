@@ -1,67 +1,48 @@
-import os
-from time import sleep
-
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
 import multiprocessing
 
-from compare import compare
-from create_lists_and_new_file_for_parser import create_lists_and_new_file_for_parser
-from sort_file import sort_file
+from utils.time_track import time_track
+from utils.create_lists_and_new_file_for_parser import create_lists_and_new_file_for_parser
+from utils.Parser import Parser
+from utils.sort_file import sort_file
+from utils.compare import compare
 
 
-class Parser(multiprocessing.Process):
-
-    def __init__(self, statements, new_file, collector=None, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.collector = collector  # очередь
-        self.statements = statements
-        self.new_file = new_file
-
-    def run(self):
-        browser = webdriver.Chrome()
-        for statement in self.statements:
-
-            browser.get('https://publicbg.mjs.bg/BgInfo/')
-            input_element = browser.find_element(By.NAME, "regNum")
-            input_element.send_keys(statement)
-            input_element.send_keys(Keys.RETURN)
-            sleep(0.1)
-
-            html = browser.page_source
-            html = " ".join(html.splitlines())
-
-            if 'Резервиране на дата за получаване на удостоверение' in html:
-                self.new_file.write(f'{statements} Указ. Запись\n')
-            else:
-                _, end = html.split('<div class="validation-summary-errors text-danger"><ul><li>', 1)
-                result, _ = end.split('</li>', 1)
-                if 'Вече сте получили удостоверение по тази преписка' in result:
-                    self.new_file.write(f'{statements} Указ. Получен\n')
-                elif 'Вашето удостоверение е изпратено в консулска служба' in result:
-                    start, _ = result.split('. При получаване ')
-                    embassy = start[52:]
-                    self.new_file.write(f'{statements} Указ. Отправлено в {embassy}\n')
-                else:
-                    self.new_file.write(f'{statement} {result}\n')
-
-        browser.quit()
+@time_track
+def run_parser(multiproc):
+    lists, new_file = create_lists_and_new_file_for_parser(multiproc=multiproc)
+    collector = multiprocessing.Queue()
+    parsers = [Parser(statements=statements, collector=collector) for statements in lists]
+    for parser in parsers:
+        parser.start()
+    for parser in parsers:
+        parser.join()
+    with open(new_file, 'a', encoding='utf8') as ff:
+        while not collector.empty():
+            print(f'Длина очереди - {collector.qsize()} ')
+            data = str(collector.get())
+            ff.write(data)
+            print(f'Строка {data.split(" ", 1)[0]} записана')
+    sort_file(new_file)
+    compare(file_result='compare_result.txt')
+    # sleep(30)
+    #
+    # with open(new_file, 'a', encoding='utf8') as ff:
+    #     while True:
+    #         one_is_alive = any([parser.is_alive() for parser in parsers])
+    #         # print([parser.is_alive() for parser in parsers])
+    #         if one_is_alive:
+    #             if not collector.empty():
+    #                 data = str(collector.get())
+    #                 ff.write(data)
+    #                 print(f'Строка {data.split(" ", 1)[0]} записана')
+    #                 # print(f'Длина очереди - {collector.qsize()} ')
+    #                 # sleep(0.4)
+    #         else:
+    #             break
+    #
+    #     print('проеден')
+    #     print(f'Длина очереди - {collector.qsize()} ')
 
 
 if __name__ == '__main__':
-    lists, new_file = create_lists_and_new_file_for_parser(multiprocessing=4)
-
-    with open(new_file, 'a', encoding='utf8') as ff:
-        for statements in lists:
-            parser = Parser(statements=statements, new_file=ff)
-            parser.run()
-    sort_file(new_file)
-    compare(file_result='compare_result.txt')
-
-    # collector = multiprocessing.Queue()
-    # parsers = [Parser(statements=statements, new_file=ff) for statements in lists]
-    # for parser in parsers:
-    #     parser.start()
-    # for parser in parsers:
-    #     parser.join()
+    run_parser(multiproc=8)
