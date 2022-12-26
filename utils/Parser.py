@@ -14,9 +14,10 @@ class Parser(multiprocessing.Process):
 
     def run(self):
         browser = webdriver.Chrome()
+        browser.get('https://publicbg.mjs.bg/BgInfo/')
         for statement in self.statements:
 
-            browser.get('https://publicbg.mjs.bg/BgInfo/')
+            # browser.get('https://publicbg.mjs.bg/BgInfo/')
             input_element = browser.find_element(By.NAME, "regNum")
             input_element.send_keys(statement)
             input_element.send_keys(Keys.RETURN)
@@ -27,6 +28,8 @@ class Parser(multiprocessing.Process):
 
             if 'Резервиране на дата за получаване на удостоверение' in html:
                 self.collector.put(f'{statement} Указ. Запись\n')
+                print(f'Обработан номер - {statement}')
+                browser.get('https://publicbg.mjs.bg/BgInfo/')
             else:
                 _, end = html.split('<div class="validation-summary-errors text-danger"><ul><li>', 1)
                 result, _ = end.split('</li>', 1)
