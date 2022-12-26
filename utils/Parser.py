@@ -28,7 +28,7 @@ class Parser(multiprocessing.Process):
 
             if 'Резервиране на дата за получаване на удостоверение' in html:
                 self.collector.put(f'{statement} Указ. Запись\n')
-                print(f'Обработан номер - {statement}')
+                # print(f'Обработан номер - {statement}')
                 browser.get('https://publicbg.mjs.bg/BgInfo/')
             else:
                 _, end = html.split('<div class="validation-summary-errors text-danger"><ul><li>', 1)
@@ -41,6 +41,6 @@ class Parser(multiprocessing.Process):
                     self.collector.put(f'{statement} Указ. Отправлено в {embassy}\n')
                 else:
                     self.collector.put(f'{statement} {result}\n')
-                print(f'Обработан номер - {statement}')
+                # print(f'Обработан номер - {statement}')
 
         browser.quit()
