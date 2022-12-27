@@ -14,20 +14,21 @@ def run_parser(multiproc):
     collector = multiprocessing.Queue()
     parsers = [Parser(statements=statements, collector=collector) for statements in lists]
     for parser in parsers:
+        sleep(0.5)
         parser.start()
 
     sleep(30)
 
     with open(new_file, 'a', encoding='utf8') as ff:
-        while True:
-            one_is_alive = any([parser.is_alive() for parser in parsers])
-            if one_is_alive:
-                if not collector.empty():
-                    data = str(collector.get())
-                    ff.write(data)
-                    print(f'Строка {data.split(" ", 1)[0]} записана')
-            else:
-                break
+        while any([parser.is_alive() for parser in parsers]):
+            # one_is_alive = any([parser.is_alive() for parser in parsers])
+            # if one_is_alive:
+            if not collector.empty():
+                data = str(collector.get())
+                ff.write(data)
+                print(f'Строка {data.split(" ", 1)[0]} записана')
+            # else:
+            #     break
 
         print(f'В очереди - {collector.qsize()} ')
 
@@ -44,4 +45,7 @@ def run_parser(multiproc):
 
 
 if __name__ == '__main__':
-    run_parser(multiproc=20)
+    run_parser(multiproc=12)
+
+# 20.2 мин - 12 потоков
+# 30.2 мин - 12 потоков

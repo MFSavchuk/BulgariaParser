@@ -9,8 +9,9 @@ def create_lists_and_new_file_for_parser(multiproc):
     list_statements = []
     filepaths = [os.path.join(dirpath, file) for dirpath, dirnames, filenames in os.walk('01_data') for file in
                  filenames]
-    previous_file = filepaths[-1]
+
     if not os.path.exists(new_file):
+        previous_file = filepaths[-1]
         with open(previous_file, 'r', encoding='utf8') as ff_read, open(new_file, 'w', encoding='utf8') as ff_write:
             for line in ff_read:
                 if _check_line(line_for_check=line, file_name=ff_write):
@@ -19,6 +20,7 @@ def create_lists_and_new_file_for_parser(multiproc):
         list_statements = _chunked_list(lists=list_statements, multiproc=multiproc)
         return list_statements, new_file
     else:
+        previous_file = filepaths[-2]
         raise ValueError(f'\nФайл {new_file} существует. Удалите перед запуском\n')
 
 
