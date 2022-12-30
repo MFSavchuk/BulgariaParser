@@ -12,12 +12,15 @@ from utils.compare import compare
 def run_parser(multiproc):
     lists, new_file = create_lists_and_new_file_for_parser(multiproc=multiproc)
     collector = multiprocessing.Queue()
+    lists_len = sum(map(len, lists))
     parsers = [Parser(statements=statements, collector=collector) for statements in lists]
     for parser in parsers:
         sleep(0.5)
         parser.start()
 
     sleep(30)
+
+    count = 0
 
     with open(new_file, 'a', encoding='utf8') as ff:
         while any([parser.is_alive() for parser in parsers]):
@@ -26,7 +29,10 @@ def run_parser(multiproc):
             if not collector.empty():
                 data = str(collector.get())
                 ff.write(data)
-                print(f'Строка {data.split(" ", 1)[0]} записана')
+                # print(f'Строка {data.split(" ", 1)[0]} записана')
+                count += 1
+                print(f'Выполнено {count} из {lists_len}')
+
             # else:
             #     break
 
@@ -47,5 +53,4 @@ def run_parser(multiproc):
 if __name__ == '__main__':
     run_parser(multiproc=12)
 
-# 20.2 мин - 12 потоков
 # 30.2 мин - 12 потоков
