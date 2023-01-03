@@ -51,6 +51,9 @@ def run_parser(multiproc):
 
 
 if __name__ == '__main__':
-    run_parser(multiproc=12)
+    run_parser(multiproc=6)
 
 # 30.2 мин - 12 потоков
+# 30.6 мин - 6 потоков
+# 30.2 мин - 8 потоков
+# 35.6 мин - 4 потоков
