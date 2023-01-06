@@ -52,6 +52,7 @@ def run_parser(multiproc):
 
 if __name__ == '__main__':
     run_parser(multiproc=6)
+    # compare(file_result='compare_result.txt')
 
 # 30.2 мин - 12 потоков
 # 30.6 мин - 6 потоков
