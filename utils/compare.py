@@ -82,6 +82,7 @@ def compare(file_result):
                     statements['9.Отказ Вицепрезидента'].append(statement)
                 else:
                     print(line2)
+        tuple_statements = sorted(statements.items(), key=lambda x: x[0])
 
     with open(filepaths[-1], 'r', encoding='utf8') as f1:
         for line in f1:
@@ -112,7 +113,7 @@ def compare(file_result):
         ff.write('\n')
         print('---------------------------------------------------------------------------------------------------------------------------------------')
 
-        for key, values in statements.items():
+        for key, values in tuple_statements:
             count = 0
             for _ in values:
                 count += 1
